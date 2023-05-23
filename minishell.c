@@ -14,11 +14,11 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*cmd_line;
+	// char	*cmd_line;
 	t_data	data;
 	(void)argc;
 	(void)argv;
-	
+
 	fill_env(envp, &data);
 	// while (1)
 	// {

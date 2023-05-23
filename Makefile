@@ -21,7 +21,8 @@ FLAGS = -Wall -Werror -Wextra
 NAME = minishell
 
 SRC = excution/excution.c excution/cmd1.c minishell.c excution/fill_env.c \
-		libft/strnstr.c libft/split.c  libft/substr.c libft/strtrim.c
+		libft/strnstr.c libft/split.c  libft/substr.c libft/strtrim.c \
+		libft/getstr.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -31,7 +32,7 @@ all : $(NAME)
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME) : $(OBJ) $(HEADER)
-		$(CC) $(OBJ) $(FLAGS) -o  $(NAME) -lreadline
+		$(CC) $(OBJ) $(FLAGS) -o  $(NAME)
 
 clean : 
 	$(RM) $(OBJ)

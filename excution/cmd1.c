@@ -14,9 +14,6 @@
 
 void	cmd1(char *cmd, char **env)
 {
-	int	i;
-
-	i = 0;
 	(void)env;
 	(void)cmd;
 }
