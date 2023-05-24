@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 18:34:31 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/22 18:58:23 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/24 18:12:56 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	fill_env(char **envp, t_data *data)
 	{
 		if (ft_strnstr(envp[i], "PATH=", 5))
 		{
-			data->path = ft_split(ft_strtrim(envp[i], "PATH="), ':');
-			if (!data->path)
+			data->paths = ft_split(ft_strtrim(envp[i], "PATH="), ':');
+			if (!data->paths)
 				return ;
 			break ;
 		}

@@ -6,7 +6,7 @@
 #    By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/16 17:59:51 by mel-harc          #+#    #+#              #
-#    Updated: 2023/05/22 16:37:51 by mel-harc         ###   ########.fr        #
+#    Updated: 2023/05/24 18:16:06 by mel-harc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ NAME = minishell
 
 SRC = excution/excution.c excution/cmd1.c minishell.c excution/fill_env.c \
 		libft/strnstr.c libft/split.c  libft/substr.c libft/strtrim.c \
-		libft/getstr.c
+		libft/getstr.c libft/strjoin.c 
 
 OBJ = $(SRC:.c=.o)
 
@@ -32,7 +32,7 @@ all : $(NAME)
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME) : $(OBJ) $(HEADER)
-		$(CC) $(OBJ) $(FLAGS) -o  $(NAME)
+		$(CC) $(OBJ) $(FLAGS) -o  $(NAME) -lreadline
 
 clean : 
 	$(RM) $(OBJ)
