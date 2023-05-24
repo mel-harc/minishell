@@ -6,7 +6,7 @@
 #    By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/16 17:59:51 by mel-harc          #+#    #+#              #
-#    Updated: 2023/05/24 18:16:06 by mel-harc         ###   ########.fr        #
+#    Updated: 2023/05/24 22:56:30 by mel-harc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ FLAGS = -Wall -Werror -Wextra
 
 NAME = minishell
 
-SRC = excution/excution.c excution/cmd1.c minishell.c excution/fill_env.c \
+SRC = excution/excution.c  minishell.c excution/fill_env.c \
 		libft/strnstr.c libft/split.c  libft/substr.c libft/strtrim.c \
 		libft/getstr.c libft/strjoin.c 
 
