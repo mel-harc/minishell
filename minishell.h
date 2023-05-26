@@ -19,27 +19,40 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
 typedef	struct s_envp
 {
 	char			*str;
 	struct s_envp	*next;
 }	t_envp;
 
+typedef struct s_list_cmds
+{
+	char				*cmd;
+	struct s_list_cmds	*next;
+	struct s_list_cmds	*previous;
+} t_list_cmds;
+
 typedef struct s_data
 {
 	char	**paths;
 	t_envp	*head_envp;
+	t_list_cmds	*head_cmds;
 }	t_data;
 
+
 // Function on directory excution
-void	cmd1(char *cmd, char **env);
-void	execmds(char *cmd, char **paths, char **envp);
-void	fill_env(char **envp, t_data *data);
-size_t	cntlen(char **envp);
-void	copy_envp(t_data *data, char **envp);
-t_envp	*lst_new(char *envp);
-int		lst_add(t_data *data, t_envp *new_node);
-char	*check_cmd(char *cmd, char **paths);
+void			cmd1(char *cmd, char **env);
+void			execmds(t_data *data, char **envp);
+void			fill_env(char **envp, t_data *data);
+size_t			cntlen(char **envp);
+void			copy_envp(t_data *data, char **envp);
+t_envp			*lst_new(char *envp);
+int				lst_add(t_data *data, t_envp *new_node);
+char			*check_cmd(char *cmd, char **paths);
+void   			fill_cmds(char *cmd_line, t_data *data);
+t_list_cmds    *new_cmd(char *cmd);
+int				lst_add_cmd(t_data *data, t_list_cmds *new_cmd);
 
 
 

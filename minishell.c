@@ -23,7 +23,8 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		cmd_line = readline("BASH >> ");
-		execmds(cmd_line, data.paths, envp);
+		fill_cmds(cmd_line, &data);
+		execmds(&data, envp);
 	}
 	return (0);
 }

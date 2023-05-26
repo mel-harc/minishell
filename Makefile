@@ -22,7 +22,7 @@ NAME = minishell
 
 SRC = excution/excution.c  minishell.c excution/fill_env.c \
 		libft/strnstr.c libft/split.c  libft/substr.c libft/strtrim.c \
-		libft/getstr.c libft/strjoin.c 
+		libft/getstr.c libft/strjoin.c excution/fill_cmds.c
 
 OBJ = $(SRC:.c=.o)
 

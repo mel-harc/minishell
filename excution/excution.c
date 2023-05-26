@@ -12,28 +12,62 @@
 
 #include "../minishell.h"
 
-void	execmds(char *cmd, char **paths, char **envp)
+void	execmds(t_data *data, char **envp)
 {
-	pid_t	pid;
-	char	**arg;
+	pid_t		pid;
+	t_list_cmds	*head_cmds;
+	char		**arg;
+	int			pipefd[2];
 
-	pid = fork();
-	if (pid == 1 || pid != 0)
-	{
-		usleep(30000);
+	if (pipe(pipefd) == -1)
 		return ;
-	}
-	if (pid == 0)
+	head_cmds = NULL;
+	head_cmds = data->head_cmds;
+	if (!head_cmds->previous && !head_cmds->next)
 	{
-		arg = (char **)malloc(sizeof(char *) * 2);
-		if (!arg)
+		pid = fork();
+		if (pid == -1 || pid != 0)
+		{
+			usleep(30000);
 			return ;
-		arg[0] = cmd;
-		arg[1] = NULL;
-		execve(check_cmd(cmd, paths), arg, envp);
-		free(arg);
+		}
+		if (pid == 0)
+		{
+			arg = (char **)malloc(sizeof(char *) * 2);
+			if (!arg)
+				return ;
+			arg[0] = head_cmds->cmd;
+			arg[1] = NULL;
+			execve(check_cmd(head_cmds->cmd, data->paths), arg, envp);
+			free(arg);
+			return;
+		}
 		return ;
 	}
+	while (head_cmds)
+	{
+		pid = fork();
+		if (pid == 1 || pid != 0)
+		{
+			
+		}
+		if (pid == 0)
+		{
+			if (!head_cmds->previous || (!head_cmds->previous && !head_cmds->next))
+			{
+				arg = (char **)malloc(sizeof(char *) * 2);
+				if (!arg)
+					return ;
+				arg[0] = head_cmds->cmd;
+				arg[1] = NULL;
+				execve(check_cmd(head_cmds->cmd, data->paths), arg, envp);
+				free(arg);
+				return ;
+			}
+		}
+		head_cmds = head_cmds->next;
+	}
+	return ;
 }
 
 char *check_cmd(char *cmd, char **paths)
