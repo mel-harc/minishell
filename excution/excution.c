@@ -52,15 +52,15 @@ void	last_cmd(t_list_cmds *cmd, t_data *data, int *pipefd, char **envp)
 	}
 	if (pid == 0)
 	{
-		close(pipefd[0]);
-		dup2(pipefd[1], 0);
+		close(pipefd[1]);
+		dup2(pipefd[0], 0);
 		arg = (char **)malloc(sizeof(char *) * 2);
 		if (!arg)
 			return ;
 		arg[0] = cmd->cmd;
 		arg[1] = NULL;
 		execve(check_cmd(cmd->cmd, data->paths), arg, envp);
-		close(pipefd[1]);
+		close(pipefd[0]);
 		free(arg);
 		return ;
 	}
@@ -138,8 +138,8 @@ void	first_cmd(t_data *data, int *pipefd, char **envp)
 	}
 	if (pid == 0)
 	{
-		close(pipefd[1]);
-		dup2(pipefd[0], 1);
+		close(pipefd[0]);
+		dup2(pipefd[1], 1);
 		arg = (char **)malloc(sizeof(char *) * 2);
 		if (!arg)
 			return ;
@@ -147,7 +147,7 @@ void	first_cmd(t_data *data, int *pipefd, char **envp)
 		arg[1] = NULL;
 		execve(check_cmd(head_cmds->cmd, data->paths), arg, envp);
 		free(arg);
-		close(pipefd[0]);
+		close(pipefd[1]);
 		return ;
 	}
 }
