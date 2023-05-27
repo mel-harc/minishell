@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 // # include <libc.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -53,6 +55,9 @@ char			*check_cmd(char *cmd, char **paths);
 void   			fill_cmds(char *cmd_line, t_data *data);
 t_list_cmds    *new_cmd(char *cmd);
 int				lst_add_cmd(t_data *data, t_list_cmds *new_cmd);
+void			one_cmd(t_data *data, char **envp);
+void			first_cmd(t_data *data, int *pipefd, char **envp);
+void			last_cmd(t_list_cmds *cmd, t_data *data, int *pipefd, char **envp);
 
 
 
