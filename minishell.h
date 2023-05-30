@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:59:46 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/24 22:26:15 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:30:28 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int				lst_add_cmd(t_data *data, t_list_cmds *new_cmd);
 void			one_cmd(t_data *data, char **envp);
 void			first_cmd(t_data *data, int *pipefd, char **envp);
 void			last_cmd(t_list_cmds *cmd, t_data *data, int *pipefd, char **envp);
-
+void			middle_cmd(t_list_cmds *cmd, t_data *data, int *pipe1, int *pipe2, char **envp);
 
 
 // Function on directory libft
