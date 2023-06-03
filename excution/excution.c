@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 18:05:24 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/31 16:16:04 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/03 18:35:55 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,34 @@
 void	execmds(t_data *data, char **envp)
 {
 	t_list_cmds	*tmp_cmds;
-	int			pipefd[2];
+	int			**pipefd;
+	int			i;
 
 	tmp_cmds = NULL;
+	i = 0; 
 	tmp_cmds = data->head_cmds;
 	if (!tmp_cmds->previous && !tmp_cmds->next && tmp_cmds)
 		one_cmd(data, envp);
 	else
 	{
-		pipe(pipefd);
+		pipefd = alloc_fds(data->head_cmds);
+		pipe(pipefd[i]);
 		if (tmp_cmds && tmp_cmds->next && !tmp_cmds->previous)
 		{
-			first_cmd(data, pipefd, envp);
+			first_cmd(data, pipefd[i], envp);
 			tmp_cmds = tmp_cmds->next;
 		}
 		while (tmp_cmds && tmp_cmds->previous && tmp_cmds->next)
 		{
-			close(pipefd[0]);
-			close(pipefd[1]);
-			pipe(pipefd);
-			middle_cmd(tmp_cmds, data, pipefd, envp);
+			close(pipefd[i][1]);
+			pipe(pipefd[++i]);
+			middle_cmd(tmp_cmds, data, pipefd[i - 1], pipefd[i],envp);
 			tmp_cmds = tmp_cmds->next;
 		}
 		if (tmp_cmds && tmp_cmds->previous && !tmp_cmds->next)
-			last_cmd(tmp_cmds, data, pipefd, envp);
-		close(pipefd[0]);
-		close(pipefd[1]);
+			last_cmd(tmp_cmds, data, pipefd[i], envp);
+		close(pipefd[i][0]);
+		close(pipefd[i][1]);
 		while (wait(NULL) != -1)
 			;
 	}
@@ -145,7 +147,7 @@ void	first_cmd(t_data *data, int *pipe, char **envp)
 	}
 }
 
-void	middle_cmd(t_list_cmds *cmd, t_data *data, int *pipefd, char **envp)
+void	middle_cmd(t_list_cmds *cmd, t_data *data, int *old_pipe, int *new_pipe, char **envp)
 {
 	char **arg;
 	pid_t	pid;
@@ -153,10 +155,10 @@ void	middle_cmd(t_list_cmds *cmd, t_data *data, int *pipefd, char **envp)
 	pid = fork();
 	if (pid == 0)
 	{
-		dup2(pipefd[0], 0);
-		dup2(pipefd[1], 1);
-		close(pipefd[1]);
-		close(pipefd[0]);
+		dup2(old_pipe[0], 0);
+		dup2(new_pipe[1], 1);
+		close(old_pipe[0]);
+		close(new_pipe[1]);
 		arg = (char **)malloc(sizeof(char *) * 2);
 		if (!arg)
 			return ;
@@ -165,4 +167,40 @@ void	middle_cmd(t_list_cmds *cmd, t_data *data, int *pipefd, char **envp)
 		execve(check_cmd(cmd->cmd, data->paths), arg, envp);
 		return ;
 	}
+}
+
+int	**alloc_fds(t_list_cmds *head)
+{
+	int	**table;
+	int	i;
+	int	cnt;
+
+	cnt = size_lst(head);
+	table = (int **)malloc(sizeof(int *) * (cnt + 1));
+	if (!table)
+		return (NULL);
+	i = -1;
+	while (++i <= cnt)
+	{
+		table[i] = malloc(sizeof(int) * 2);
+		if (!table[i])
+			return (NULL);
+	}
+	table[i] = NULL;
+	return (table);
+}
+
+int	size_lst(t_list_cmds *head)
+{
+	int			i;
+	t_list_cmds	*tmp;
+
+	i = -1;
+	tmp = head;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
 }
