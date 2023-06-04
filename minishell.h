@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:59:46 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/03 18:25:16 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/04 19:18:12 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_data
 // Function on directory excution
 void			cmd1(char *cmd, char **env);
 void			execmds(t_data *data, char **envp);
+void			mlt_cmds(t_list_cmds *tmp_cmds , t_data *data, char **envp);
 void			fill_env(char **envp, t_data *data);
 size_t			cntlen(char **envp);
 void			copy_envp(t_data *data, char **envp);
