@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fill_cmds.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/06 15:47:11 by mel-harc          #+#    #+#             */
+/*   Updated: 2023/06/06 15:47:12 by mel-harc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void    fill_cmds(char *cmd_line, t_data *data)
@@ -25,7 +37,7 @@ t_list_cmds    *new_cmd(char *cmd)
     node = (t_list_cmds *)malloc(sizeof(t_list_cmds));
     if (!node)
         return (NULL);
-    node->cmd = cmd;
+    node->cmd = ft_split(cmd, ' ');
     node->next = NULL;
     node->previous = NULL;
     return (node);

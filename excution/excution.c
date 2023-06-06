@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 18:05:24 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/04 22:20:22 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:10:10 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,24 @@ void	execmds(t_data *data, char **envp)
 void	mlt_cmds(t_list_cmds *tmp_cmds, t_data *data, char **envp)
 {
 	int			i;
+	int			j;
 	int			**pipefd;
 
 	i = 0;
+	j = -1;
 	pipefd = alloc_fds(data->head_cmds);
 	pipe(pipefd[i]);
 	if (tmp_cmds && tmp_cmds->next && !tmp_cmds->previous)
 	{
 		first_cmd(data, pipefd[i], envp);
+		close(pipefd[i][1]);
 		tmp_cmds = tmp_cmds->next;
 	}
 	while (tmp_cmds && tmp_cmds->previous && tmp_cmds->next)
 	{
-		close(pipefd[i][1]);
 		pipe(pipefd[++i]);
 		middle_cmd(tmp_cmds, data, pipefd[i - 1], pipefd[i], envp);
+		close(pipefd[i - 1][0]);
 		tmp_cmds = tmp_cmds->next;
 	}
 	if (tmp_cmds && tmp_cmds->previous && !tmp_cmds->next)
