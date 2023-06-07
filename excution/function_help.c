@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 22:18:16 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/07 15:30:19 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/07 16:24:47 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	last_cmd(t_list_cmds *cmd, t_data *data, int *pipe, char **envp)
 	int		pid;
 	char	**arg;
 
-	
 	pid = fork();
 	if (pid == -1)
 		exit(1);
