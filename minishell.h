@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:59:46 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/06 15:54:24 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/07 10:51:52 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void			last_cmd(t_list_cmds *cmd, t_data *data, int *pipefd, char **envp);
 void			middle_cmd(t_list_cmds *cmd, t_data *data, int *old_pipe, int *new_pipe, char **envp);
 int				size_lst(t_list_cmds *head);
 int				**alloc_fds(t_list_cmds *head);
+int				check_builtins(char **cmd);
+void			run_builtins(char **cmd);
+void			echo(char **cmd);
 
 // Function on directory libft
 char			*ft_strnstr(const char *haystack, const char *needle, size_t len);

@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 22:18:16 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/06 21:02:56 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/07 15:30:19 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ void	one_cmd(t_data *data, char **envp)
 	}
 	if (pid == 0)
 	{
+		if (check_builtins(head_cmds->cmd))
+			run_builtins(head_cmds->cmd);
 		arg = (char **)malloc(sizeof(char *) * 3);
 		if (!arg)
 			return ;
 		arg = head_cmds->cmd;
 		execve(check_cmd(head_cmds->cmd[0], data->paths), arg, envp);
-		return ;
 	}
 	return ;
 }
@@ -45,14 +46,18 @@ void	first_cmd(t_data *data, int *pipe, char **envp)
 	char		**arg;
 	t_list_cmds	*head_cmds;
 
-	pid = fork();
 	head_cmds = NULL;
 	head_cmds = data->head_cmds;
+	pid = fork();
+	if (pid == -1)
+		exit(1);
 	if (pid == 0)
 	{
 		close(pipe[0]);
 		dup2(pipe[1], 1);
 		close(pipe[1]);
+		if (check_builtins(head_cmds->cmd))
+			run_builtins(head_cmds->cmd);
 		arg = (char **)malloc(sizeof(char *) * 3);
 		if (!arg)
 			return ;
@@ -68,6 +73,8 @@ void	middle_cmd(t_list_cmds *cmd, t_data *data, int *old_pipe, int *new_pipe, ch
 	pid_t	pid;
 
 	pid = fork();
+	if (pid == -1)
+		exit(1);
 	if (pid == 0)
 	{
 		close(new_pipe[0]);
@@ -76,6 +83,8 @@ void	middle_cmd(t_list_cmds *cmd, t_data *data, int *old_pipe, int *new_pipe, ch
 		dup2(new_pipe[1], 1);
 		close(old_pipe[0]);
 		close(new_pipe[1]);
+		if (check_builtins(cmd->cmd))
+			run_builtins(cmd->cmd);
 		arg = (char **)malloc(sizeof(char *) * 3);
 		if (!arg)
 			return ;
@@ -90,12 +99,17 @@ void	last_cmd(t_list_cmds *cmd, t_data *data, int *pipe, char **envp)
 	int		pid;
 	char	**arg;
 
+	
 	pid = fork();
+	if (pid == -1)
+		exit(1);
 	if (pid == 0)
 	{
 		close(pipe[1]);
 		dup2(pipe[0], 0);
 		close(pipe[0]);
+		if (check_builtins(cmd->cmd))
+			run_builtins(cmd->cmd);
 		arg = (char **)malloc(sizeof(char *) * 3);
 		if (!arg)
 			return ;
