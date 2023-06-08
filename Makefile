@@ -6,7 +6,7 @@
 #    By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/16 17:59:51 by mel-harc          #+#    #+#              #
-#    Updated: 2023/06/07 10:53:57 by mel-harc         ###   ########.fr        #
+#    Updated: 2023/06/08 15:04:10 by mel-harc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC = excution/excution.c  minishell.c excution/fill_env.c \
 		libft/strnstr.c libft/split.c  libft/substr.c libft/strtrim.c \
 		libft/getstr.c libft/strjoin.c excution/fill_cmds.c  excution/utls.c \
 		excution/function_help.c\
-		builtins/builtins_main.c builtins/echo.c
+		builtins/builtins_main.c builtins/echo.c builtins/cd.c
 
 OBJ = $(SRC:.c=.o)
 

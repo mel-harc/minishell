@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 22:18:16 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/07 16:24:47 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/08 17:02:33 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,26 @@ void	one_cmd(t_data *data, char **envp)
 
 	head_cmds = NULL;
 	head_cmds = data->head_cmds;
-	pid = fork();
-	if (pid == -1 || pid != 0)
+	if (ft_strnstr(head_cmds->cmd[0], "cd", 2))
+		cd(head_cmds->cmd);
+	else
 	{
-		waitpid(pid, &status, 0);
-		return ;
-	}
-	if (pid == 0)
-	{
-		if (check_builtins(head_cmds->cmd))
-			run_builtins(head_cmds->cmd);
-		arg = (char **)malloc(sizeof(char *) * 3);
-		if (!arg)
+		pid = fork();
+		if (pid == -1 || pid != 0)
+		{
+			waitpid(pid, &status, 0);
 			return ;
-		arg = head_cmds->cmd;
-		execve(check_cmd(head_cmds->cmd[0], data->paths), arg, envp);
+		}
+		if (pid == 0)
+		{
+			if (check_builtins(head_cmds->cmd))
+				run_builtins(head_cmds->cmd);
+			arg = (char **)malloc(sizeof(char *) * 3);
+			if (!arg)
+				return ;
+			arg = head_cmds->cmd;
+			execve(check_cmd(head_cmds->cmd[0], data->paths), arg, envp);
+		}
 	}
 	return ;
 }

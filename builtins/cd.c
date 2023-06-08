@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/07 10:37:34 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/08 14:43:12 by mel-harc         ###   ########.fr       */
+/*   Created: 2023/06/08 14:44:16 by mel-harc          #+#    #+#             */
+/*   Updated: 2023/06/08 16:33:14 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	echo(char **cmd)
+void	cd(char **cmd)
 {
-	int		i;
-
-	if (ft_strnstr(cmd[1], "-n", 2))
-	{
-		i = 2;
-		printf("%s", cmd[i]);
-		while (cmd[++i])
-			printf(" %s", cmd[i]);
-	}
+	if (chdir(cmd[1]) == 0)
+		return ;
 	else
 	{
-		i = 1;
-		printf("%s", cmd[i]);
-		while (cmd[++i])
-			printf(" %s", cmd[i]);
-		printf("\n");
-	}
-	exit (0);
+		printf("cd: %s: No such file or directory\n", cmd[1]);
+		return ;
+	} 
 }
