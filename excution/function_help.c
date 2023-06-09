@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 22:18:16 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/08 17:02:33 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/09 18:46:49 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	one_cmd(t_data *data, char **envp)
 
 	head_cmds = NULL;
 	head_cmds = data->head_cmds;
-	if (ft_strnstr(head_cmds->cmd[0], "cd", 2))
-		cd(head_cmds->cmd);
+	if (built_main(head_cmds->cmd))
+		run_builtins(head_cmds->cmd);
 	else
 	{
 		pid = fork();

@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:59:46 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/08 16:28:44 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/09 18:46:24 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,12 @@ int				size_lst(t_list_cmds *head);
 int				**alloc_fds(t_list_cmds *head);
 int				check_builtins(char **cmd);
 void			run_builtins(char **cmd);
+int				built_main(char **cmd);
 void			echo(char **cmd);
 void			cd(char **cmd);
+char			*search_chr(const char *s, int c);
+void			eexit(char **cmd);
+void			put_error(int i, char *arg);
 
 // Function on directory libft
 char			*ft_strnstr(const char *haystack, const char *needle, size_t len);
@@ -76,5 +80,8 @@ size_t			ft_strlen(const char *s);
 char			*ft_strtrim(char const *s1, char const *set);
 char			**ft_split(const char *s, char c);
 char			*getstr(char *src);
+int				ft_atoi(const char *str);
+int				ft_isdigit(int c);
+char			*ft_strchr(const char *s, int c);
 
 #endif

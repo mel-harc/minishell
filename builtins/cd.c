@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:44:16 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/08 16:33:14 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/09 18:13:25 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ void	cd(char **cmd)
 	{
 		printf("cd: %s: No such file or directory\n", cmd[1]);
 		return ;
-	} 
+	}
 }

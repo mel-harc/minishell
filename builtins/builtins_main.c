@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 10:16:40 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/08 17:01:49 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/09 18:49:05 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	check_builtins(char **cmd)
 {
 	if (ft_strnstr(cmd[0], "echo", 4))
+		return (1);
+	else if (ft_strnstr(cmd[0], "cd", 2))
 		return (1);
 	else if (ft_strnstr(cmd[0], "pwd", 3))
 		return (1);
@@ -30,10 +32,21 @@ int	check_builtins(char **cmd)
 		return (0);
 }
 
+int	built_main(char **cmd)
+{
+	if (ft_strnstr(cmd[0], "cd", 2))
+		return (1);
+	if (ft_strnstr(cmd[0], "exit", 4))
+		return (1);
+	return (0);
+}
+
 void	run_builtins(char **cmd)
 {
 	if (ft_strnstr(cmd[0], "echo", 4))
 		echo(cmd);
 	if (ft_strnstr(cmd[0], "cd", 2))
 		cd(cmd);
+	if (ft_strnstr(cmd[0], "exit", 4))
+		eexit(cmd);
 }
