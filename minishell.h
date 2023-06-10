@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:59:46 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/09 18:46:24 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/10 21:43:49 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void			echo(char **cmd);
 void			cd(char **cmd);
 char			*search_chr(const char *s, int c);
 void			eexit(char **cmd);
-void			put_error(int i, char *arg);
+void			put_error(int flag, char *arg, int nbr);
 
 // Function on directory libft
 char			*ft_strnstr(const char *haystack, const char *needle, size_t len);
