@@ -6,14 +6,13 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:59:46 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/10 21:43:49 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/11 20:20:28 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// # include <libc.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -21,6 +20,10 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/errno.h>
+
+
+int	exit_status;
 
 typedef struct s_envp
 {
@@ -40,8 +43,7 @@ typedef struct s_data
 	char		**paths;
 	t_envp		*head_envp;
 	t_list_cmds	*head_cmds;
-	int			std_out;
-	int			std_int;
+	int			exit_status;
 }	t_data;
 
 // Function on directory excution

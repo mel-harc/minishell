@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 09:46:22 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/10 23:01:29 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/11 20:32:34 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int	ft_atoi(const char *str)
 	while (str[i] >= 48 && str[i] <= 57)
 	{
 		rest = rest * 10 + str[i] - 48;
-		if (rest - 1 > 9223372036854775807 && sign == -1)
-			put_error(1, (char *)str, rest);
+		if (rest - 1> 9223372036854775807 && sign == -1)
+			put_error(1, (char *)str, 255);
 		else if (rest > 9223372036854775807 && sign == 1)
-			put_error(1, (char *)str, rest);
+			put_error(1, (char *)str, 255);
 		i++;
 	}
 	return (rest * sign);

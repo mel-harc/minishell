@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 10:37:34 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/09 10:34:27 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/11 19:57:39 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	echo(char **cmd)
 			printf(" %s", cmd[i]);
 		printf("\n");
 	}
+	exit_status = 0;
 	exit (0);
 }
 

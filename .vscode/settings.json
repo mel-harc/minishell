@@ -1,6 +1,13 @@
 {
 	"files.associations": {
 		"minishell.h": "c",
-		"complex": "c"
+		"complex": "c",
+		"errno.h": "c",
+		"history.h": "c",
+		"array": "c",
+		"iterator": "c",
+		"string": "c",
+		"string_view": "c",
+		"vector": "c"
 	}
 }
