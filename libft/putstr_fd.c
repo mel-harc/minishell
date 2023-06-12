@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   putstr_fd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 14:44:16 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 21:17:31 by mel-harc         ###   ########.fr       */
+/*   Created: 2023/06/12 20:33:55 by mel-harc          #+#    #+#             */
+/*   Updated: 2023/06/12 20:34:56 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	cd(char **cmd)
+void	_putstr_fd(char *s, int fd)
 {
-	int	exit;
-	
-	exit = chdir(cmd[1]);
-	if (exit == 0)
+	size_t	i;
+
+	i = 0;
+	if (!s)
 		return ;
-	else
+	while (s[i])
 	{
-		exit_status = 1;
-		_putstr_fd("cd: No such file or directory\n", 2);
-		return ;
+		write(fd, &s[i], 1);
+		i++;
 	}
 }

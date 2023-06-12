@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:59:46 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/11 20:20:28 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/12 23:35:06 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/errno.h>
+#include <signal.h>
 
 
 int	exit_status;
@@ -73,6 +74,9 @@ void			cd(char **cmd);
 char			*search_chr(const char *s, int c);
 void			eexit(char **cmd);
 void			put_error(int flag, char *arg, int nbr);
+void			status_of_exit(int status);
+void			set_error(void);
+void			free_fd(int **array_fd);
 
 // Function on directory libft
 char			*ft_strnstr(const char *haystack, const char *needle, size_t len);
@@ -85,5 +89,6 @@ char			*getstr(char *src);
 int				ft_atoi(const char *str);
 int				ft_isdigit(int c);
 char			*ft_strchr(const char *s, int c);
+void			_putstr_fd(char *s, int fd);
 
 #endif

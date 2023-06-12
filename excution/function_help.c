@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 22:18:16 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/11 22:15:47 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/12 23:35:52 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ void	one_cmd(t_data *data, char **envp)
 		if (pid == -1 || pid != 0)
 		{
 			waitpid(pid, &status, 0);
-			exit_status = WEXITSTATUS(status);
-			printf("status : %d\n", exit_status);
+			status_of_exit(status);
 			return ;
 		}
 		if (pid == 0)
@@ -42,11 +41,7 @@ void	one_cmd(t_data *data, char **envp)
 				return ;
 			arg = head_cmds->cmd;
 			execve(check_cmd(head_cmds->cmd[0], data->paths), arg, envp);
-			if (errno == EACCES)
-			{
-				exit_status = 1;
-				printf("minishell: %s: Permission denied\n", head_cmds->cmd[0]);
-			}
+			set_error();
 		}
 	}
 	return ;
@@ -75,6 +70,7 @@ void	first_cmd(t_data *data, int *pipe, char **envp)
 			return ;
 		arg = head_cmds->cmd;
 		execve(check_cmd(head_cmds->cmd[0], data->paths), arg, envp);
+		set_error();
 	}
 }
 
@@ -101,6 +97,7 @@ void	middle_cmd(t_list_cmds *cmd, t_data *data, int *old_pipe, int *new_pipe, ch
 			return ;
 		arg = cmd->cmd;
 		execve(check_cmd(cmd->cmd[0], data->paths), arg, envp);
+		set_error();
 	}
 }
 
@@ -124,5 +121,16 @@ void	last_cmd(t_list_cmds *cmd, t_data *data, int *pipe, char **envp)
 			return ;
 		arg = cmd->cmd;
 		execve(check_cmd(cmd->cmd[0], data->paths), arg, envp);
+		set_error();
 	}
+}
+
+void	free_fd(int **array_fd)
+{
+	int	i;
+
+	i = -1;
+	while (array_fd[++i])
+		free(array_fd[i]);
+	free(array_fd);
 }
