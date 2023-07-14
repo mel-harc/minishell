@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_status.c                                      :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: houadou <houadou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 11:21:03 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/07/08 18:43:55 by houadou          ###   ########.fr       */
+/*   Created: 2022/10/26 09:22:15 by houadou           #+#    #+#             */
+/*   Updated: 2023/06/16 13:45:49 by houadou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-void	status_of_exit(int status)
-{
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSTOPPED(status))
-		g_exit_status = WSTOPSIG(status) + 128;
-	else if (WIFSIGNALED(status))
-	{
-		if (128 + WTERMSIG(status) == 130)
-			_putstr_fd("\n", 2);
-		if (128 + WTERMSIG(status) == 131)
-			_putstr_fd("Quit: 3\n", 2);
-		g_exit_status = WTERMSIG(status) + 128;
-	}
-}
+# define BUFFER_SIZE 100
+
+# include <stdlib.h>
+# include <unistd.h>
+# include "libft.h"
+
+char	*get_next_line(int fd);
+size_t	gnl_strlen(const char *str);
+int		ft_new_line(const char *str);
+char	*gnl_strjoin(char *s1, char *s2);
+
+#endif

@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isdigit.c                                          :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: houadou <houadou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 20:28:43 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 20:28:46 by mel-harc         ###   ########.fr       */
+/*   Created: 2022/10/07 14:48:05 by houadou           #+#    #+#             */
+/*   Updated: 2022/10/18 10:26:23 by houadou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_isdigit(int c)
+char	*ft_strrchr(const char *str, int c)
 {
-	if (c >= 48 && c <= 57)
-		return (1);
-	else
-		return (0);
-}
+	int	l;
 
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s != (char)c)
+	l = ft_strlen(str);
+	while (l >= 0)
 	{
-		if (*s == '\0')
-			return (0);
-		s++;
+		if (str[l] == (char) c)
+			return ((char *)str + l);
+		l--;
 	}
-	return ((char *)s);
+	return (NULL);
 }

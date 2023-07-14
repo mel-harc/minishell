@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 10:16:40 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/11 18:22:33 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/07/08 13:22:13 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,21 @@
 
 int	check_builtins(char **cmd)
 {
-	if (ft_strnstr(cmd[0], "echo", 4))
+	if (_strcmp(cmd[0], "echo"))
 		return (1);
-	else if (ft_strnstr(cmd[0], "cd", 2))
+	else if (_strcmp(cmd[0], "echo "))
 		return (1);
-	else if (ft_strnstr(cmd[0], "pwd", 3))
+	else if (_strcmp(cmd[0], "cd"))
 		return (1);
-	else if (ft_strnstr(cmd[0], "export", 6))
+	else if (_strcmp(cmd[0], "export"))
 		return (1);
-	else if (ft_strnstr(cmd[0], "unset", 5))
+	else if (_strcmp(cmd[0], "pwd"))
 		return (1);
-	else if (ft_strnstr(cmd[0], "env", 3))
+	else if (_strcmp(cmd[0], "unset"))
 		return (1);
-	else if (ft_strnstr(cmd[0], "exit", 4))
+	else if (_strcmp(cmd[0], "env"))
+		return (1);
+	else if (_strcmp(cmd[0], "exit"))
 		return (1);
 	else
 		return (0);
@@ -34,19 +36,40 @@ int	check_builtins(char **cmd)
 
 int	built_main(char **cmd)
 {
-	if (ft_strnstr(cmd[0], "cd", 2))
+	if (_strcmp(cmd[0], "cd"))
 		return (1);
-	if (ft_strnstr(cmd[0], "exit", 4))
+	else if (_strcmp(cmd[0], "pwd"))
+		return (1);
+	else if (_strcmp(cmd[0], "unset"))
+		return (1);
+	else if (_strcmp(cmd[0], "export"))
+		return (1);
+	else if (_strcmp(cmd[0], "env"))
+		return (1);
+	else if (_strcmp(cmd[0], "exit"))
 		return (1);
 	return (0);
 }
 
-void	run_builtins(char **cmd)
+void	run_builtins(char **cmd, t_data *data)
 {
-	if (ft_strnstr(cmd[0], "echo", 4))
+	if (_strcmp(cmd[0], "echo"))
 		echo(cmd);
-	if (ft_strnstr(cmd[0], "cd", 2))
-		cd(cmd);
-	if (ft_strnstr(cmd[0], "exit", 4))
+	else if (_strcmp(cmd[0], "cd"))
+		cd(cmd, data);
+	else if (_strcmp(cmd[0], "exit"))
 		eexit(cmd);
+	else if (_strcmp(cmd[0], "export"))
+		export(cmd, data);
+	else if (_strcmp(cmd[0], "env"))
+		show_env(data->ev);
+	else if (_strcmp(cmd[0], "pwd"))
+		show_pwd(data);
+	else if (_strcmp(cmd[0], "unset"))
+		unset(cmd, data);
+	else if (_strcmp(cmd[0], "echo "))
+	{
+		write(1, "\n", 1);
+		exit(0);
+	}
 }

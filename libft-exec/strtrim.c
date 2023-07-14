@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 20:30:02 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 20:30:19 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:30:40 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static	size_t	ft_count_i(const char *s1, const char *set)
 	return (i);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*_strtrim(char const *s1, char const *set)
 {
 	size_t	lens;
 	size_t	i;
@@ -65,8 +65,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (str);
 	}
 	i = ft_count_i(s1, set);
-	lens = ft_strlen(s1);
+	lens = _strlen(s1);
 	lens = ft_down(s1, set, lens, i);
-	str = ft_substr(s1, i, lens - i);
+	str = _substr(s1, i, lens - i);
 	return (str);
 }

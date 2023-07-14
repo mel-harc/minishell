@@ -6,39 +6,68 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 18:19:48 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/04 18:59:02 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/07/08 21:19:24 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*check_cmd(char *cmd, char **paths)
+char	*check_cmd(char *cmd, t_env *env)
 {
 	int		i;
 	char	*str;
 	char	*ncmd;
+	char	**paths;
 
 	i = 0;
-	ncmd = ft_strjoin("/", cmd);
-	if (!ncmd)
+	if (_strnstr(cmd, "/", _strlen(cmd)))
+		return (cmd);
+	paths = _split(get_path(env), ':');
+	if (!paths)
 		return (NULL);
+	if (path_cmd(cmd))
+		return (cmd);
+	ncmd = _strjoin("/", cmd);
+	if (!ncmd)
+		exit(1);
 	while (paths[++i])
 	{
-		str = ft_strjoin(paths[i], ncmd);
-		if (!str)
-			return (NULL);
+		str = _strjoin(paths[i], ncmd);
 		if (!access(str, F_OK | X_OK))
-			return (str);
+			return (free_paths(paths), free(ncmd), str);
 		free(str);
 	}
-	free(ncmd);
+	return (free(ncmd), free_paths(paths), NULL);
+}
+
+int	path_cmd(char *cmd)
+{
+	if (!access(cmd, F_OK | X_OK))
+		return (1);
+	else
+		return (0);
+}
+
+char	*get_path(t_env *env)
+{
+	int		i;
+	t_env	*tmp;
+
+	i = 0;
+	tmp = env;
+	while (tmp)
+	{
+		if (_strnstr(tmp->variable, "PATH", 4))
+			return (tmp->value);
+		tmp = tmp->next;
+	}
 	return (NULL);
 }
 
-int	size_lst(t_list_cmds *head)
+int	size_lst(t_command *head)
 {
 	int			i;
-	t_list_cmds	*tmp;
+	t_command	*tmp;
 
 	i = -1;
 	tmp = head;
@@ -50,7 +79,7 @@ int	size_lst(t_list_cmds *head)
 	return (i);
 }
 
-int	**alloc_fds(t_list_cmds *head)
+int	**alloc_fds(t_command *head)
 {
 	int	**table;
 	int	i;

@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_status.c                                      :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: houadou <houadou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 11:21:03 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/07/08 18:43:55 by houadou          ###   ########.fr       */
+/*   Created: 2022/10/14 09:53:33 by houadou           #+#    #+#             */
+/*   Updated: 2022/10/14 10:06:53 by houadou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	status_of_exit(int status)
+char	*ft_strmapi(const char *s, char (*f)(unsigned int, char))
 {
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSTOPPED(status))
-		g_exit_status = WSTOPSIG(status) + 128;
-	else if (WIFSIGNALED(status))
+	char	*str;
+	int		i;
+
+	i = 0;
+	if (!s || !f)
+		return (NULL);
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!str)
+		return (NULL);
+	while (s[i])
 	{
-		if (128 + WTERMSIG(status) == 130)
-			_putstr_fd("\n", 2);
-		if (128 + WTERMSIG(status) == 131)
-			_putstr_fd("Quit: 3\n", 2);
-		g_exit_status = WTERMSIG(status) + 128;
+		str[i] = f(i, s[i]);
+		i++;
 	}
+	str[i] = 0;
+	return (str);
 }

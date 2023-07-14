@@ -1,29 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_status.c                                      :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: houadou <houadou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 11:21:03 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/07/08 18:43:55 by houadou          ###   ########.fr       */
+/*   Created: 2022/10/09 10:16:22 by houadou           #+#    #+#             */
+/*   Updated: 2022/10/18 10:47:09 by houadou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	status_of_exit(int status)
+char	*ft_strnstr(const char *s1, const char *s2, size_t len)
 {
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSTOPPED(status))
-		g_exit_status = WSTOPSIG(status) + 128;
-	else if (WIFSIGNALED(status))
+	size_t	i;
+	size_t	j;
+	size_t	l_ofs2;
+
+	l_ofs2 = (int)ft_strlen(s2);
+	if (*s2 == '\0')
+		return ((char *)s1);
+	i = 0;
+	if (len)
 	{
-		if (128 + WTERMSIG(status) == 130)
-			_putstr_fd("\n", 2);
-		if (128 + WTERMSIG(status) == 131)
-			_putstr_fd("Quit: 3\n", 2);
-		g_exit_status = WTERMSIG(status) + 128;
+		while (s1[i] && i < len)
+		{
+			j = 0;
+			while (s2[j] && i + j < len && s2[j] == s1[i + j])
+				j++;
+			if (j == l_ofs2)
+				return ((char *)s1 + i);
+			i++;
+		}
 	}
+	return (NULL);
 }

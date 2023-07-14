@@ -5,84 +5,96 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/21 18:34:31 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/24 18:12:56 by mel-harc         ###   ########.fr       */
+/*   Created: 2023/06/13 20:45:03 by mel-harc          #+#    #+#             */
+/*   Updated: 2023/07/10 10:50:07 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	fill_env(char **envp, t_data *data)
+char	**_env(t_env *env)
+{
+	t_env	*tmp;
+	char	**envp;
+	char	*str;
+	int		i;
+
+	tmp = env;
+	envp = (char **)malloc(sizeof(char *) * (size_of_var(tmp) + 1));
+	if (!envp)
+		exit(1);
+	i = 0;
+	while (tmp)
+	{
+		if (tmp->value)
+		{
+			str = _strjoin(tmp->variable, "=");
+			envp[i] = _strjoin(str, tmp->value);
+			free(str);
+		}
+		else
+			envp[i] = tmp->variable;
+		tmp = tmp->next;
+		i++;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
+
+int	size_of_var(t_env *env)
+{
+	int		i;
+	t_env	*tmp;
+
+	i = 0;
+	tmp = env;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+void	_redirect(t_command *cmd)
+{
+	if (g_exit_status == -2000 || cmd->input == -1 || cmd->output == -1)
+		exit(1);
+	if (cmd->input > 0)
+	{
+		dup2(cmd->input, 0);
+		close(cmd->input);
+	}
+	if (cmd->output > 0)
+	{
+		dup2(cmd->output, 1);
+		close(cmd->output);
+	}
+}
+
+void	free_paths(char **str)
 {
 	int	i;
 
-	i = 0;
-	data->head_envp = NULL;
-	copy_envp(data, envp);
-	while (envp[i])
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
+}
+
+void	_set_path(t_data *data)
+{
+	char	*path;
+	t_env	*node;
+	char	*save;
+
+	path = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+	create_and_addback_env_node(&data->ev, "PATH", path);
+	node = _is_exist(data, "PATH");
+	if (node)
 	{
-		if (ft_strnstr(envp[i], "PATH=", 5))
-		{
-			data->paths = ft_split(ft_strtrim(envp[i], "PATH="), ':');
-			if (!data->paths)
-				return ;
-			break ;
-		}
-		i++;
+		save = node->declare;
+		node->declare = ft_strdup("not printed");
+		free(save);
 	}
-	return ;
-}
-
-size_t	cntlen(char **envp)
-{
-	int i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (envp[i++])
-		j++;
-	j++;
-	return (j);
-}
-
-void	copy_envp(t_data *data, char **envp)
-{
-	int		i;
-
-	i = 0;
-	while (envp[i])
-		if (lst_add(data, lst_new(envp[i++])))
-			return ;
-}
-
-int	lst_add(t_data *data, t_envp *new_node)
-{
-	t_envp	*head;
-
-	head = NULL;
-	if (!new_node)
-		return (1);
-	if (!data->head_envp)
-		data->head_envp = new_node;
-	else
-	{
-		head = data->head_envp;
-		while (head->next)
-			head = head->next;
-		head->next = new_node;
-	}
-	return (0);
-}
-
-t_envp	*lst_new(char *envp)
-{
-	t_envp	*node;
-
-	node = (t_envp *)malloc(sizeof(t_envp));
-	if (!node)
-		return (NULL);
-	node->str = getstr(envp);
-	node->next = NULL;
-	return (node);
 }

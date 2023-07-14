@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 10:37:34 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/11 19:57:39 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/07/14 08:48:27 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ void	echo(char **cmd)
 {
 	int		i;
 
-	if (ft_strnstr(cmd[1], "-", 1) && !search_chr(cmd[1], 'n'))
+	if (!cmd[1])
+		write(1, "\n", 1);
+	else if (_strnstr(cmd[1], "-", 1) && !search_chr(cmd[1], 'n'))
 	{
 		i = 2;
-		while (ft_strnstr(cmd[i], "-", 1) && !search_chr(cmd[i], 'n'))
+		while (_strnstr(cmd[i], "-", 1) && !search_chr(cmd[i], 'n'))
 			i++;
 		if (cmd[i])
 			printf("%s", cmd[i]);
@@ -35,7 +37,6 @@ void	echo(char **cmd)
 			printf(" %s", cmd[i]);
 		printf("\n");
 	}
-	exit_status = 0;
 	exit (0);
 }
 
@@ -49,4 +50,10 @@ char	*search_chr(const char *s, int c)
 		s++;
 	}
 	return ((char *)s);
+}
+
+void	error_cd(void)
+{
+	g_exit_status = 1;
+	printf("minishell$: cd: OLDPWD not set\n");
 }

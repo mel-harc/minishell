@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_status.c                                      :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: houadou <houadou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 11:21:03 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/07/08 18:43:55 by houadou          ###   ########.fr       */
+/*   Created: 2022/10/10 09:06:41 by houadou           #+#    #+#             */
+/*   Updated: 2023/06/15 11:44:02 by houadou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	status_of_exit(int status)
+char	*ft_substr(const char *str, unsigned int start, size_t len)
 {
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSTOPPED(status))
-		g_exit_status = WSTOPSIG(status) + 128;
-	else if (WIFSIGNALED(status))
-	{
-		if (128 + WTERMSIG(status) == 130)
-			_putstr_fd("\n", 2);
-		if (128 + WTERMSIG(status) == 131)
-			_putstr_fd("Quit: 3\n", 2);
-		g_exit_status = WTERMSIG(status) + 128;
-	}
+	size_t	l;
+	char	*r;
+
+	if (!str)
+		return (NULL);
+	l = ft_strlen(str);
+	if (start >= l)
+		return (ft_strdup(""));
+	if (start + len > l)
+		len = l - start;
+	r = (char *)malloc(sizeof(char) * len + 1);
+	if (!r)
+		return (NULL);
+	ft_strlcpy(r, str + start, len + 1);
+	return (r);
 }

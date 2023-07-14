@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_status.c                                      :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: houadou <houadou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 11:21:03 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/07/08 18:43:55 by houadou          ###   ########.fr       */
+/*   Created: 2022/10/07 13:05:46 by houadou           #+#    #+#             */
+/*   Updated: 2023/06/01 10:47:14 by houadou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	status_of_exit(int status)
+int	ft_toupper(int c)
 {
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSTOPPED(status))
-		g_exit_status = WSTOPSIG(status) + 128;
-	else if (WIFSIGNALED(status))
-	{
-		if (128 + WTERMSIG(status) == 130)
-			_putstr_fd("\n", 2);
-		if (128 + WTERMSIG(status) == 131)
-			_putstr_fd("Quit: 3\n", 2);
-		g_exit_status = WTERMSIG(status) + 128;
-	}
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
+	return (c);
 }

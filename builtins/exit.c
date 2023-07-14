@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 18:35:33 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 18:21:15 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/07/10 13:19:11 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,36 @@ void	eexit(char **cmd)
 				put_error(1, cmd[1], 255);
 			i++;
 		}
-		nbr = ft_atoi(cmd[1]);
+		nbr = _atoi(cmd[1]);
 		if (cmd[2])
+		{
 			put_error(0, cmd[1], 257);
+			return ;
+		}
 		else
 			put_error(2, cmd[1], nbr);
 	}
-	put_error(3, cmd[1], 0);
+	put_error(2, cmd[1], 0);
 }
 
 void	put_error(int flag, char *arg, int nbr)
 {
-	printf("exit\n");
+	(void)arg;
 	if (flag == 0)
-		printf("minishell: exit: too many arguments\n");
-	if (flag == 1)
-		printf("minishell: exit: %s: numeric argument required\n", arg);
-	exit(nbr);
+	{
+		_putstr_fd("exit\n", 2);
+		g_exit_status = 1;
+		_putstr_fd("minishell$: exit: too many arguments\n", 2);
+	}	
+	else if (flag == 1)
+	{
+		_putstr_fd("exit\n", 2);
+		_putstr_fd("minishell$: exit: numeric argument required\n", 2);
+		exit(nbr);
+	}
+	else if (flag == 2)
+	{
+		_putstr_fd("exit\n", 1);
+		exit(nbr);
+	}
 }

@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_status.c                                      :+:      :+:    :+:   */
+/*   strnstr.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: houadou <houadou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 11:21:03 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/07/08 18:43:55 by houadou          ###   ########.fr       */
+/*   Created: 2023/06/12 20:29:51 by mel-harc          #+#    #+#             */
+/*   Updated: 2023/06/16 17:34:51 by houadou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	status_of_exit(int status)
+char	*_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSTOPPED(status))
-		g_exit_status = WSTOPSIG(status) + 128;
-	else if (WIFSIGNALED(status))
+	size_t	i;
+	size_t	j;
+	char	*str;
+
+	i = 0;
+	str = (char *)haystack;
+	if (needle[i] == '\0')
+		return (str);
+	if (len == 0)
+		return (0);
+	while (str[i] != '\0' && i < len)
 	{
-		if (128 + WTERMSIG(status) == 130)
-			_putstr_fd("\n", 2);
-		if (128 + WTERMSIG(status) == 131)
-			_putstr_fd("Quit: 3\n", 2);
-		g_exit_status = WTERMSIG(status) + 128;
+		j = 0;
+		while ((needle[j] == str[i + j] && str[i + j] != '\0') && i + j < len)
+			j++;
+		if (needle[j] == '\0')
+			return (str + i);
+		i++;
 	}
+	return (0);
 }

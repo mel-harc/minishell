@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 20:28:52 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 20:29:08 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:50:09 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static	char	**ft_free(char **str, int d)
 	return (0);
 }
 
-char	**ft_split(const char *s, char c)
+char	**_split(const char *s, char c)
 {
 	char	**str;
 	size_t	i;
@@ -61,7 +61,7 @@ char	**ft_split(const char *s, char c)
 		while (s[len] && s[len] != c)
 			len++;
 		if (len != 0)
-			str[i++] = ft_substr(s, 0, len);
+			str[i++] = _substr(s, 0, len);
 		if (!str[i - 1])
 			return (ft_free(str, i - 1));
 		s += len;

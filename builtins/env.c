@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strnstr.c                                          :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 20:29:51 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 20:29:53 by mel-harc         ###   ########.fr       */
+/*   Created: 2023/06/17 16:04:14 by mel-harc          #+#    #+#             */
+/*   Updated: 2023/07/08 22:46:41 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+void	show_env(t_env *env)
 {
-	size_t	i;
-	size_t	j;
-	char	*str;
+	t_env	*tmp;
 
-	i = 0;
-	str = (char *)haystack;
-	if (needle[i] == '\0')
-		return (str);
-	if (len == 0)
-		return (0);
-	while (str[i] != '\0' && i < len)
+	tmp = env;
+	while (tmp)
 	{
-		j = 0;
-		while ((needle[j] == str[i + j] && str[i + j] != '\0') && i + j < len)
-			j++;
-		if (needle[j] == '\0')
-			return (str + i);
-		i++;
+		if (tmp->value && _strcmp(tmp->declare, "declare -x"))
+			printf("%s=%s\n", tmp->variable, tmp->value);
+		tmp = tmp->next;
 	}
-	return (0);
 }

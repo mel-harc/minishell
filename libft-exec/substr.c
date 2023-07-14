@@ -6,13 +6,13 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 20:30:25 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 20:30:48 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:49:44 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-size_t	ft_strlen(const char *s)
+size_t	_strlen(const char *s)
 {
 	size_t	i;
 
@@ -37,7 +37,7 @@ static	size_t	ft_count_size(unsigned int start, size_t len, size_t lens)
 	return (i);
 }
 
-char	*ft_substr(const char *s, unsigned int start, size_t len)
+char	*_substr(const char *s, unsigned int start, size_t len)
 {
 	char			*str;
 	size_t			i;
@@ -45,7 +45,7 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 
 	if (!s)
 		return (0);
-	lens = ft_strlen(s);
+	lens = _strlen(s);
 	i = ft_count_size(start, len, lens);
 	str = (char *)malloc((i + 1) * sizeof(char));
 	if (!str)

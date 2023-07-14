@@ -6,131 +6,126 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 22:18:16 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 23:35:52 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/07/11 11:11:16 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	one_cmd(t_data *data, char **envp)
+void	one_cmd(t_command **cmd, t_data *data)
 {
 	int			pid;
-	int			status;
-	t_list_cmds	*head_cmds;
-	char		**arg;
 
-	head_cmds = NULL;
-	head_cmds = data->head_cmds;
-	if (built_main(head_cmds->cmd))
-		run_builtins(head_cmds->cmd);
+	if (built_main((*cmd)->command))
+		run_builtins((*cmd)->command, data);
 	else
 	{
 		pid = fork();
-		if (pid == -1 || pid != 0)
-		{
-			waitpid(pid, &status, 0);
-			status_of_exit(status);
+		if (pid == -1)
 			return ;
-		}
+		if (pid != 0)
+			update_exit_status(pid);
 		if (pid == 0)
 		{
-			if (check_builtins(head_cmds->cmd))
-				run_builtins(head_cmds->cmd);
-			arg = (char **)malloc(sizeof(char *) * 3);
-			if (!arg)
-				return ;
-			arg = head_cmds->cmd;
-			execve(check_cmd(head_cmds->cmd[0], data->paths), arg, envp);
-			set_error();
-		}
+			if ((*cmd)->input != -8 || (*cmd)->output != -8)
+				_redirect((*cmd));
+			if (check_builtins((*cmd)->command))
+			{
+				run_builtins((*cmd)->command, data);
+				exit(0);
+			}
+			exec_one_cmd(cmd, data);
+		}	
 	}
-	return ;
 }
 
-void	first_cmd(t_data *data, int *pipe, char **envp)
+void	first_cmd(t_command *cmd, int *pipe, t_data *data)
 {
 	pid_t		pid;
-	char		**arg;
-	t_list_cmds	*head_cmds;
 
-	head_cmds = NULL;
-	head_cmds = data->head_cmds;
 	pid = fork();
 	if (pid == -1)
-		exit(1);
+		return ;
 	if (pid == 0)
 	{
+		if (_strcmp(cmd->command[0], "./minishell"))
+			signal_shell_level(data);
+		signal(SIGQUIT, SIG_DFL);
 		close(pipe[0]);
 		dup2(pipe[1], 1);
 		close(pipe[1]);
-		if (check_builtins(head_cmds->cmd))
-			run_builtins(head_cmds->cmd);
-		arg = (char **)malloc(sizeof(char *) * 3);
-		if (!arg)
-			return ;
-		arg = head_cmds->cmd;
-		execve(check_cmd(head_cmds->cmd[0], data->paths), arg, envp);
-		set_error();
+		if (cmd->input != -8 || cmd->output != -8)
+			_redirect(cmd);
+		if (check_builtins(cmd->command))
+		{
+			run_builtins(cmd->command, data);
+			exit(0);
+		}
+		_exec(cmd, data);
 	}
+	close(pipe[1]);
 }
 
-void	middle_cmd(t_list_cmds *cmd, t_data *data, int *old_pipe, int *new_pipe, char **envp)
+void	middle_cmd(t_command *cmd, t_data *data, int *old_pipe, int *new_pipe)
 {
-	char	**arg;
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
-		exit(1);
+		return ;
 	if (pid == 0)
-	{
-		close(new_pipe[0]);
-		close(old_pipe[1]);
-		dup2(old_pipe[0], 0);
-		dup2(new_pipe[1], 1);
-		close(old_pipe[0]);
-		close(new_pipe[1]);
-		if (check_builtins(cmd->cmd))
-			run_builtins(cmd->cmd);
-		arg = (char **)malloc(sizeof(char *) * 3);
-		if (!arg)
-			return ;
-		arg = cmd->cmd;
-		execve(check_cmd(cmd->cmd[0], data->paths), arg, envp);
-		set_error();
-	}
+		exec_midle_cmd(cmd, data, new_pipe, old_pipe);
+	close(old_pipe[0]);
+	close(new_pipe[1]);
 }
 
-void	last_cmd(t_list_cmds *cmd, t_data *data, int *pipe, char **envp)
+void	last_cmd(t_command *cmd, t_data *data, int *pipe)
 {
 	int		pid;
-	char	**arg;
 
 	pid = fork();
 	if (pid == -1)
-		exit(1);
+		return ;
+	if (pid != 0)
+		update_exit_status(pid);
 	if (pid == 0)
 	{
+		if (_strcmp(cmd->command[0], "./minishell"))
+			signal_shell_level(data);
+		signal(SIGQUIT, SIG_DFL);
 		close(pipe[1]);
 		dup2(pipe[0], 0);
 		close(pipe[0]);
-		if (check_builtins(cmd->cmd))
-			run_builtins(cmd->cmd);
-		arg = (char **)malloc(sizeof(char *) * 3);
-		if (!arg)
-			return ;
-		arg = cmd->cmd;
-		execve(check_cmd(cmd->cmd[0], data->paths), arg, envp);
-		set_error();
+		if (cmd->input != -8 || cmd->output != -8)
+			_redirect(cmd);
+		if (check_builtins(cmd->command))
+		{
+			run_builtins(cmd->command, data);
+			exit(0);
+		}
+		_exec(cmd, data);
 	}
+	close(pipe[0]);
 }
 
-void	free_fd(int **array_fd)
+void	_exec(t_command *cmd, t_data *data)
 {
-	int	i;
+	char	*path;
 
-	i = -1;
-	while (array_fd[++i])
-		free(array_fd[i]);
-	free(array_fd);
+	path = check_cmd(cmd->command[0], data->ev);
+	if (!path)
+		set_error(path, cmd);
+	if (execve(path, cmd->command, _env(data->ev)) == -1)
+	{
+		if (access(cmd->command[0], F_OK))
+		{
+			_putstr_fd("minishell$: No such file or directory\n", 2);
+			exit(127);
+		}
+		if (access(cmd->command[0], X_OK))
+		{
+			_putstr_fd("minishell$: Permission denied\n", 2);
+			exit(126);
+		}
+	}
 }

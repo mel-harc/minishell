@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getstr.c                                           :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: houadou <houadou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 20:27:52 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/06/12 20:28:05 by mel-harc         ###   ########.fr       */
+/*   Created: 2022/10/09 12:59:28 by houadou           #+#    #+#             */
+/*   Updated: 2023/06/13 10:57:11 by houadou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-char	*getstr(char *src)
+char	*ft_strdup(const char *str)
 {
-	char	*dst;
-	int		i;
+	char	*dup;
+	size_t	size;
 
-	dst = (char *)malloc((ft_strlen(src) + 1) * sizeof(char));
-	if (!dst)
+	size = ft_strlen(str) + 1;
+	dup = (char *)malloc(size);
+	if (!dup)
 		return (NULL);
-	i = -1;
-	while (src[++i])
-		dst[i] = src[i];
-	dst[i] = '\0';
-	return (dst);
+	ft_strlcpy(dup, str, size);
+	return (dup);
 }
