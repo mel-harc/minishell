@@ -53,7 +53,7 @@ void	cd_dash(t_data *data)
 			pwd = _is_exist(data, "PWD");
 			if (pwd)
 			{
-				node->value = ft_strdup(pwd->value);
+				node->value = _strdup(pwd->value);
 				free(save);
 			}
 			return (replace_pwd(data));
@@ -90,11 +90,9 @@ void	replace_pwd(t_data *data)
 
 void	replace_old_pwd(t_data *data)
 {
-	t_env	*tmp;
 	t_env	*node;
 	char	*save;
 
-	tmp = data->ev;
 	node = _is_exist(data, "OLDPWD");
 	if (node)
 	{

@@ -32,10 +32,8 @@ void	execmds(t_command **cmd, t_data *data)
 void	mlt_cmds(t_command **cmds, t_data *data)
 {
 	int			**pipefd;
-	int			status;
 	t_command	*tmp_cmd;
 
-	status = 0;
 	tmp_cmd = (*cmds);
 	pipefd = alloc_fds(tmp_cmd);
 	loop_cmds(tmp_cmd, pipefd, data);

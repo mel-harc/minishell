@@ -16,7 +16,7 @@ static void	white_spaces_skip(t_token **tokens)
 {
 	*tokens = (*tokens)->next;
 	while ((*tokens)->next && (*tokens)->type == WHITE_SPACE)
-			*tokens = (*tokens)->next;
+		*tokens = (*tokens)->next;
 }
 
 static void	output_redirection(t_data *data, t_token **tokens)
@@ -66,11 +66,8 @@ static void	append(t_data *data, t_token **tokens)
 
 static void	input_redirection(t_data *data, t_token **tokens)
 {
-	int		fd;
-
-	fd = 0;
 	if (data->input != -8)
-		fd = close(data->input);
+		close(data->input);
 	white_spaces_skip(tokens);
 	data->input = open((*tokens)->content, O_RDONLY);
 	if (data->input == -1)
@@ -84,8 +81,6 @@ static void	input_redirection(t_data *data, t_token **tokens)
 
 void	redirection_manage(t_data *data, t_token **tokens)
 {
-	int		fd;
-
 	if (finally_is_valid((*tokens)->type, 2))
 		output_redirection(data, tokens);
 	else if (finally_is_valid((*tokens)->type, 3))
@@ -94,9 +89,8 @@ void	redirection_manage(t_data *data, t_token **tokens)
 		input_redirection(data, tokens);
 	else if (finally_is_valid((*tokens)->type, 5))
 	{
-		fd = 0;
 		if (data->input != -8)
-			fd = close(data->input);
+			close(data->input);
 		white_spaces_skip(tokens);
 		data->std_int = dup(0);
 		data->input = here_doc(data, tokens);

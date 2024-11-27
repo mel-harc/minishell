@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	g_exit_status = 0;
+
 static void	init_env_exp(char **env, t_data *data)
 {
 	int		i;
@@ -76,7 +78,7 @@ static void	start_loop(t_data *data)
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
-
+	
 	data = malloc(sizeof(t_data));
 	if (!data)
 		exit(1);

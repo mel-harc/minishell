@@ -50,10 +50,8 @@ int	path_cmd(char *cmd)
 
 char	*get_path(t_env *env)
 {
-	int		i;
 	t_env	*tmp;
 
-	i = 0;
 	tmp = env;
 	while (tmp)
 	{

@@ -35,7 +35,7 @@ void	one_cmd(t_command **cmd, t_data *data)
 				exit(0);
 			}
 			exec_one_cmd(cmd, data);
-		}	
+		}
 	}
 }
 

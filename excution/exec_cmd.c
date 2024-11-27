@@ -52,7 +52,7 @@ void	signal_shell_level(t_data *data)
 	{
 		save = node->value;
 		level = _atoi(save) + 1;
-		node->value = ft_itoa(level);
+		node->value = _itoa(level);
 		free(save);
 	}
 }

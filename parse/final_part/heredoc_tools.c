@@ -28,7 +28,7 @@ char	*trim(char **line, int flag)
 	if (flag == 1)
 		*line = ft_strtrim(tmp, " \t\n");
 	else
-	*line = ft_strtrim(tmp, "\n");
+		*line = ft_strtrim(tmp, "\n");
 	free(tmp);
 	return (*line);
 }

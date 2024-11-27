@@ -55,7 +55,7 @@ void	replace(char *str, t_data *data)
 		{
 			save = tmp->value;
 			value = _strchr_value(str, '=');
-			tmp->value = ft_strdup(value);
+			tmp->value = _strdup(value);
 			free(save);
 			break ;
 		}

@@ -25,7 +25,7 @@ static	size_t	ft_down(const char *s1, const char *set, size_t len, size_t	i)
 			j = 0;
 		}
 		else
-		j++;
+			j++;
 	}
 	return (len);
 }

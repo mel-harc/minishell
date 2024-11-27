@@ -88,13 +88,13 @@ void	_set_path(t_data *data)
 	t_env	*node;
 	char	*save;
 
-	path = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+	path = _strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
 	create_and_addback_env_node(&data->ev, "PATH", path);
 	node = _is_exist(data, "PATH");
 	if (node)
 	{
 		save = node->declare;
-		node->declare = ft_strdup("not printed");
+		node->declare = _strdup("not printed");
 		free(save);
 	}
 }

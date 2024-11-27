@@ -31,9 +31,10 @@
 # define NOT_VALID_WORD "\'\"\t\n ><$|"
 # define SPECIAL_CHAR "!~|@%^*{}$[].-+=/#"
 # define ERROR_PIPES "minishell$> syntax error near unexpected token `|'\n"
-# define ERROR_REDIR "minishell$> syntax error near unexpected token `newline'\n"
+# define ERROR_REDIR "minishell$> syntax error near unexpected \
+	token `newline'\n"
 
-int	g_exit_status;
+extern int	g_exit_status;
 
 typedef enum s_tokens_type{
 	PIPE,
@@ -159,6 +160,9 @@ char		*_strchr_value(const char *s, int c);
 void		_putstr_fd(char *s, int fd);
 int			_isalpha(int c);
 int			_strcmp(const char *s1, const char *s2);
+char		*_strdup(const char *str);
+size_t		_strlcpy(char *dst, const char *src, size_t dstsize);
+char		*_itoa(int n);
 void		set_error(char *path, t_command *cmd);
 int			parse_arg_unset(char *arg);
 

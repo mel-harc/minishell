@@ -25,7 +25,7 @@ void	if_not_existed_variable(t_token **temp, int existed_variable)
 		(*temp) = current_node_erase((*temp));
 	if (temp && (*temp)->prev && (*temp)->prev->content[0] != '>' && \
 		(*temp)->prev->content[0] != '<')
-			(*temp)->type = DB_QUOTE_STRING;
+		(*temp)->type = DB_QUOTE_STRING;
 }
 
 static void	variable_expand(t_token **temp, t_data *data)

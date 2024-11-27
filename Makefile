@@ -17,10 +17,7 @@ LIBFT			= 	libft/libft.a
 
 CC 				= 	cc
 CFLAGS			= 	-Wall -Wextra -Werror
-# READLINE_INC	= 	-I/Users/houadou/homebrew/Cellar/readline/8.2.1/include
-# READLINE_LIB	=	-L/Users/houadou/homebrew/Cellar/readline/8.2.1/lib -lreadline
-READLINE_INC	= 	-I/Users/mel-harc/.brew/Cellar/readline/8.2.1/include
-READLINE_LIB	=	-L/Users/mel-harc/.brew/Cellar/readline/8.2.1/lib -lreadline
+LDFLAGS 		= 	-lreadline
 RM 				= 	rm -f
 
 
@@ -32,25 +29,25 @@ SRC 			=   minishell.c parse/free_functions.c parse/lst_creation/env_lst_create.
 					excution/excution.c excution/utls.c excution/function_help.c excution/fill_env.c excution/exit_status.c excution/exec_cmd.c\
 					libft-exec/strnstr.c libft-exec/split.c  libft-exec/substr.c libft-exec/strtrim.c \
 					libft-exec/getstr.c libft-exec/strjoin.c libft-exec/atoi.c libft-exec/isdigit.c libft-exec/putstr_fd.c \
+					libft-exec/strdup.c \
 					builtins/builtins_main.c builtins/echo.c builtins/cd.c builtins/exit.c builtins/export.c builtins/env.c builtins/pwd.c  builtins/unset.c parse/signals.c \
 
 
 OBJ				= 	$(SRC:.c=.o)
 
 
-all				: 	$(NAME)
+all				: $(LIBFT)	$(NAME)
 
+
+$(LIBFT)		:
+	make -C libft
 
 $(NAME)			: 	$(OBJ) $(HEADER) $(LIBFT)
-	$(CC) $(CFLAGS) $(READLINE_INC) $(READLINE_LIB) $(LIBFT) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT)  $(LDFLAGS) -o $(NAME)
 
 
 %.o 			:	 %.c $(HEADER)
 	$(CC) $(CFLAGS) $(READLINE_INC) -c $< -o $@
-
-
-$(LIBFT)		:
-	make bonus -C libft
 
 
 clean			:

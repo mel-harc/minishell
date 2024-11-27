@@ -20,11 +20,11 @@ void	eexit(char **cmd)
 	i = 0;
 	if (cmd[1])
 	{
-		if (ft_strnstr(cmd[1], "-", 1) || ft_strnstr(cmd[1], "+", 1))
+		if (_strnstr(cmd[1], "-", 1) || _strnstr(cmd[1], "+", 1))
 			i++;
 		while (cmd[1][i])
 		{
-			if (!ft_strchr("0123456789", cmd[1][i]))
+			if (!_strchr("0123456789", cmd[1][i]))
 				put_error(1, cmd[1], 255);
 			i++;
 		}
@@ -48,7 +48,7 @@ void	put_error(int flag, char *arg, int nbr)
 		_putstr_fd("exit\n", 2);
 		g_exit_status = 1;
 		_putstr_fd("minishell$: exit: too many arguments\n", 2);
-	}	
+	}
 	else if (flag == 1)
 	{
 		_putstr_fd("exit\n", 2);
